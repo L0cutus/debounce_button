@@ -91,9 +91,26 @@ void loop() {
   if (IMU.accelerationAvailable())
   {
     IMU.readAcceleration(x, y, z);
+    
+    x = abs(x);
+    y = abs(y);
+    z = abs(z);
+
+
+    if (x > 1)
+      x = 1;
+    if (y > 1)
+      y = 1;
+    if (z > 1)
+      z = 1;
+    
     ix = x * 100;
     iy = y * 100;
     iz = z * 100;
+
+    Serial.print("x:  " + String(x) + "\t");
+    Serial.print("y " + String(y) + "\t");
+    Serial.println("z: " + String(z));
 
     int xval = map(ix, 0, 100, 0, 255);
     int yval = map(iy, 0, 100, 0, 255);
@@ -104,6 +121,9 @@ void loop() {
     analogWrite(GREEN, yval);
     analogWrite(BLUE, zval);
 
+    Serial.print("Red:  " + String(xval) + "\t");
+    Serial.print("Green " + String(yval) + "\t");
+    Serial.println("Blue: " + String(zval));
   }
 
   currentButton = debounce(lastButton);
